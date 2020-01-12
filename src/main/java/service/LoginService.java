@@ -1,6 +1,7 @@
 package service;
 
 import model.User;
+import utility.InMemoryDb;
 
 import java.util.Optional;
 
@@ -8,6 +9,8 @@ import java.util.Optional;
 public class LoginService {
     // metoda do logowania użytkownika
     public Optional<User> loginUser(String login, String password){
-        return null;
+        return InMemoryDb.users.stream()                                                                // stream
+                .filter(user -> user.getLogin().equals(login) && user.getPassword().equals(password))   // logowanie
+                .findAny();                                                                             // Optional
     }
 }
