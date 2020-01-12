@@ -28,10 +28,16 @@ public class LoginController {
     @FXML
     void loginAction(ActionEvent event) {
         Optional<User> userOpt = loginService.loginUser(tfLogin.getText(), pfPassword.getText());
-        if(userOpt.isPresent()){
-            lblInfo.setText("zalogowano");
+        if(userOpt.isPresent() ){
+            if(userOpt.get().isStatus()) {
+                lblInfo.setText("zalogowano");
+                loginService.clearLoginProbes(userOpt.get());
+            } else {
+                lblInfo.setText("Twoje konto jest zabolokowane");
+            }
         } else{
             lblInfo.setText("błąd logowania");
+            loginService.decrementProbes(tfLogin.getText());
         }
     }
 
