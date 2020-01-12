@@ -36,8 +36,8 @@ public class LoginController {
                 lblInfo.setText("Twoje konto jest zabolokowane");
             }
         } else{
-            lblInfo.setText("błąd logowania");
             loginService.decrementProbes(tfLogin.getText());
+            lblInfo.setText(loginService.getLoginProbes(tfLogin.getText()));
         }
     }
 
