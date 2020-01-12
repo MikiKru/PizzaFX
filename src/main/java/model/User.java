@@ -14,4 +14,5 @@ public class User {
     private Set<Role> roles;        // zbiór ról
     private LocalDateTime registrationDateTime;
     private boolean status;
+    private int probes;
 }

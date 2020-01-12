@@ -17,14 +17,16 @@ public class InMemoryDb {
                             "m",
                             new HashSet<>(Arrays.asList(Role.ROLE_ADMIN, Role.ROLE_USER)),
                             LocalDateTime.now(),
-                            true
+                            true,
+                            3
                     ),
                     new User(
                             "k",
                             "k",
                             new HashSet<>(Arrays.asList(Role.ROLE_USER)),
                             LocalDateTime.now(),
-                            true
+                            true,
+                            2
                     )
             )
     );
