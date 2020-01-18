@@ -37,7 +37,8 @@ public class LoginController {
 
     @FXML
     void registerAction(ActionEvent event) {
-
+        // otwarcie nowego okna rejestracji
+        // zamknięcie okna logowania
     }
     // metoda która zasowanie wykonana jako pierwsza
     // po wyświetlenu widoku loginView.fxml
