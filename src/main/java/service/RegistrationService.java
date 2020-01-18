@@ -1,8 +1,15 @@
 package service;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import model.Role;
+import model.User;
 import utility.InMemoryDb;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -30,5 +37,53 @@ public class RegistrationService {
     }
     public boolean isPasswordConfirmed(String password, String confirmedPassword){
         return password.equals(confirmedPassword);
+    }
+    public void registerUser(String login, String password){
+        // utwórz obiekt użytkownika
+        User user = new User(
+                login,
+                password,
+                new HashSet<>(Arrays.asList(Role.ROLE_USER)),
+                LocalDateTime.now(),
+                true,
+                3);
+        // dodajemy obiekt do listy użytkowników
+        InMemoryDb.users.add(user);
+    }
+    public void registration(TextField tfLogin, PasswordField pfPassword,
+                             PasswordField pfPasswordConfirmation, Label lblInfo, TextField lblResult,
+                             Label lblEquation, int result){
+        try {
+            if (isHuman(Integer.valueOf(lblResult.getText()), result)) {
+                if (!isLoginCorrect(tfLogin.getText())){
+                    lblInfo.setText("niepoprawny login");
+                } else if (!isLoginUnique(tfLogin.getText())){
+                    lblInfo.setText("istniaje już taki login w bazie");
+                } else if (!isPasswordCorrect(pfPassword.getText())){
+                    lblInfo.setText("hasło musi zawierać (A-Z a-z 0-9 _!.,#-)");
+                } else if (!isPasswordConfirmed(pfPassword.getText(),
+                        pfPasswordConfirmation.getText())){
+                    lblInfo.setText("hasła nie są jednakowe");
+                } else {
+                    registerUser(tfLogin.getText(), pfPassword.getText());
+                    lblInfo.setText("");
+                    lblResult.clear();
+                    tfLogin.clear();
+                    pfPassword.clear();
+                    pfPasswordConfirmation.clear();
+                }
+                result = generateRandomEquation(lblEquation);
+                lblResult.clear();
+            } else {
+                lblInfo.setText("jesteś robotem!");
+                // wygenerowanie nowego równania i aktualizacja wyniku
+                result = generateRandomEquation(lblEquation);
+                lblResult.clear();
+            }
+        } catch (Exception e){
+            lblInfo.setText("błąd rejestracji");
+            result = generateRandomEquation(lblEquation);
+            lblResult.clear();
+        }
     }
 }

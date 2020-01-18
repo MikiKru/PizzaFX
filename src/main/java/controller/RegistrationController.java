@@ -37,36 +37,7 @@ public class RegistrationController {
 
     @FXML
     void registerAction(ActionEvent event) {
-        try {
-            if (registrationService.isHuman(Integer.valueOf(lblResult.getText()), result)) {
-                if (!registrationService.isLoginCorrect(tfLogin.getText())){
-                    lblInfo.setText("niepoprawny login");
-                } else if (!registrationService.isLoginUnique(tfLogin.getText())){
-                    lblInfo.setText("istniaje już taki login w bazie");
-                } else if (!registrationService.isPasswordCorrect(pfPassword.getText())){
-                    lblInfo.setText("hasło musi zawierać (A-Z a-z 0-9 _!.,#-)");
-                } else if (!registrationService.isPasswordConfirmed(pfPassword.getText(),
-                        pfPasswordConfirmation.getText())){
-                    lblInfo.setText("hasła nie są jednakowe");
-                } else {
-                    System.out.println(tfLogin.getText());
-                    System.out.println(pfPassword.getText());
-                    System.out.println(pfPasswordConfirmation.getText());
-                    lblInfo.setText("");
-                }
-                result = registrationService.generateRandomEquation(lblEquation);
-                lblResult.clear();
-            } else {
-                lblInfo.setText("jesteś robotem!");
-                // wygenerowanie nowego równania i aktualizacja wyniku
-                result = registrationService.generateRandomEquation(lblEquation);
-                lblResult.clear();
-            }
-        } catch (Exception e){
-            lblInfo.setText("błąd rejestracji");
-            result = registrationService.generateRandomEquation(lblEquation);
-            lblResult.clear();
-        }
+
     }
     public void initialize(){
         // inicjalizacja zadeklarowanych obiektów
