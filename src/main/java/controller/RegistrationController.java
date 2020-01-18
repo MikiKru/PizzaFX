@@ -14,7 +14,7 @@ public class RegistrationController {
     // obiekty globalne - deklaracja!!!
     private WindowService windowService;
     private RegistrationService registrationService;
-    private int result;
+    public static int result;
 
     @FXML
     private TextField tfLogin;
@@ -37,7 +37,8 @@ public class RegistrationController {
 
     @FXML
     void registerAction(ActionEvent event) {
-
+        registrationService.registration(tfLogin, pfPassword, pfPasswordConfirmation,
+                lblInfo, lblResult, lblEquation);
     }
     public void initialize(){
         // inicjalizacja zadeklarowanych obiektów

@@ -1,5 +1,6 @@
 package service;
 
+import controller.RegistrationController;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -52,9 +53,10 @@ public class RegistrationService {
     }
     public void registration(TextField tfLogin, PasswordField pfPassword,
                              PasswordField pfPasswordConfirmation, Label lblInfo, TextField lblResult,
-                             Label lblEquation, int result){
+                             Label lblEquation){
+
         try {
-            if (isHuman(Integer.valueOf(lblResult.getText()), result)) {
+            if (isHuman(Integer.valueOf(lblResult.getText()), RegistrationController.result)) {
                 if (!isLoginCorrect(tfLogin.getText())){
                     lblInfo.setText("niepoprawny login");
                 } else if (!isLoginUnique(tfLogin.getText())){
@@ -72,17 +74,17 @@ public class RegistrationService {
                     pfPassword.clear();
                     pfPasswordConfirmation.clear();
                 }
-                result = generateRandomEquation(lblEquation);
+                RegistrationController.result = generateRandomEquation(lblEquation);
                 lblResult.clear();
             } else {
                 lblInfo.setText("jesteś robotem!");
                 // wygenerowanie nowego równania i aktualizacja wyniku
-                result = generateRandomEquation(lblEquation);
+                RegistrationController.result = generateRandomEquation(lblEquation);
                 lblResult.clear();
             }
         } catch (Exception e){
             lblInfo.setText("błąd rejestracji");
-            result = generateRandomEquation(lblEquation);
+            RegistrationController.result = generateRandomEquation(lblEquation);
             lblResult.clear();
         }
     }
