@@ -17,50 +17,28 @@ import java.util.Optional;
 public class LoginController {
     // obiekty globalne
     LoginService loginService;
-
     @FXML
     private TextField tfLogin;
-
     @FXML
     private PasswordField pfPassword;
-
     @FXML
     private Label lblInfo;
-
-    // metoda "własna" - nie jest wywoływana z widoku FXML
-    private void login(){
-        Optional<User> userOpt = loginService.loginUser(tfLogin.getText(), pfPassword.getText());
-        if(userOpt.isPresent() ){
-            if(userOpt.get().isStatus()) {
-                lblInfo.setText("zalogowano");
-                loginService.clearLoginProbes(userOpt.get());
-            } else {
-                lblInfo.setText("Twoje konto jest zabolokowane");
-            }
-        } else{
-            loginService.decrementProbes(tfLogin.getText());
-            lblInfo.setText(loginService.getLoginProbes(tfLogin.getText()));
-        }
-    }
 
     @FXML
     void keyLoginAction(KeyEvent keyEvent) {
         if(keyEvent.getCode() == KeyCode.ENTER) {
-            login();
+            loginService.login(tfLogin, pfPassword, lblInfo);
         }
     }
     @FXML
     void loginAction(ActionEvent event) {
-        login();
+        loginService.login(tfLogin, pfPassword, lblInfo);
     }
 
     @FXML
     void registerAction(ActionEvent event) {
 
     }
-
-
-
     // metoda która zasowanie wykonana jako pierwsza
     // po wyświetlenu widoku loginView.fxml
     public void initialize(){

@@ -1,5 +1,8 @@
 package service;
 
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import model.User;
 import utility.InMemoryDb;
 
@@ -44,5 +47,20 @@ public class LoginService {
             }
         }
         return "błędny login";
+    }
+
+    public void login(TextField tfLogin, PasswordField pfPassword, Label lblInfo){
+        Optional<User> userOpt = loginUser(tfLogin.getText(), pfPassword.getText());
+        if(userOpt.isPresent() ){
+            if(userOpt.get().isStatus()) {
+                lblInfo.setText("zalogowano");
+                clearLoginProbes(userOpt.get());
+            } else {
+                lblInfo.setText("Twoje konto jest zabolokowane");
+            }
+        } else{
+            decrementProbes(tfLogin.getText());
+            lblInfo.setText(getLoginProbes(tfLogin.getText()));
+        }
     }
 }
