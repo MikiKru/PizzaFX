@@ -9,7 +9,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import model.User;
 import service.LoginService;
+import service.WindowService;
 
+import java.io.IOException;
 import java.util.Optional;
 
 // klasa obsługująca żądania użytkownika
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class LoginController {
     // obiekty globalne
     LoginService loginService;
+    WindowService windowService;
     @FXML
     private TextField tfLogin;
     @FXML
@@ -36,14 +39,17 @@ public class LoginController {
     }
 
     @FXML
-    void registerAction(ActionEvent event) {
+    void registerAction(ActionEvent event) throws IOException {
         // otwarcie nowego okna rejestracji
+        windowService.createWindow("registrationView", "panel rejestracji");
         // zamknięcie okna logowania
+        windowService.closeWindow(lblInfo); // podajemy dowolną kontrolkę znajdującą się na oknie aplikacji w argumencie
     }
     // metoda która zasowanie wykonana jako pierwsza
     // po wyświetlenu widoku loginView.fxml
     public void initialize(){
         // inicjalizacja logiki biznesowej
         loginService = new LoginService();
+        windowService = new WindowService();
     }
 }
