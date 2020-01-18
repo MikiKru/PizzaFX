@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import model.User;
 import service.LoginService;
 
@@ -25,8 +27,8 @@ public class LoginController {
     @FXML
     private Label lblInfo;
 
-    @FXML
-    void loginAction(ActionEvent event) {
+    // metoda "własna" - nie jest wywoływana z widoku FXML
+    private void login(){
         Optional<User> userOpt = loginService.loginUser(tfLogin.getText(), pfPassword.getText());
         if(userOpt.isPresent() ){
             if(userOpt.get().isStatus()) {
@@ -42,14 +44,27 @@ public class LoginController {
     }
 
     @FXML
+    void keyLoginAction(KeyEvent keyEvent) {
+        if(keyEvent.getCode() == KeyCode.ENTER) {
+            login();
+        }
+    }
+    @FXML
+    void loginAction(ActionEvent event) {
+        login();
+    }
+
+    @FXML
     void registerAction(ActionEvent event) {
 
     }
+
+
+
     // metoda która zasowanie wykonana jako pierwsza
     // po wyświetlenu widoku loginView.fxml
     public void initialize(){
         // inicjalizacja logiki biznesowej
         loginService = new LoginService();
     }
-
 }
