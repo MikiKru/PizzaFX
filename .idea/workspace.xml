@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="pizza portal">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/PizzaPortalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/PizzaPortalController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/PizzaPortalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/PizzaPortalService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/file/users.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/file/users.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/view/pizzaPortalView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/view/pizzaPortalView.fxml" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -78,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/controller/PizzaPortalController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="560">
-              <caret line="121" lean-forward="true" selection-start-line="121" selection-end-line="121" />
+              <caret line="124" lean-forward="true" selection-start-line="124" selection-end-line="124" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#943#944#0" expanded="true" />
@@ -136,11 +133,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/service/PizzaPortalService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="71" column="38" lean-forward="true" selection-start-line="71" selection-start-column="38" selection-end-line="71" selection-end-column="38" />
+            <state relative-caret-position="371">
+              <caret line="86" column="41" selection-start-line="86" selection-start-column="41" selection-end-line="86" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -214,8 +211,8 @@
         <option value="$PROJECT_DIR$/src/main/java/model/PizzaList.java" />
         <option value="$PROJECT_DIR$/src/main/java/utility/InMemoryDb.java" />
         <option value="$PROJECT_DIR$/src/main/resources/file/users.csv" />
-        <option value="$PROJECT_DIR$/src/main/java/service/PizzaPortalService.java" />
         <option value="$PROJECT_DIR$/src/main/java/controller/PizzaPortalController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/service/PizzaPortalService.java" />
       </list>
     </option>
   </component>
@@ -346,7 +343,7 @@
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1579443769959" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1579443910396" />
     <property name="dynamic.classpath" value="false" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -462,7 +459,7 @@
       <workItem from="1359379250712" duration="1302000" />
       <workItem from="1578823681697" duration="10768000" />
       <workItem from="1578932898816" duration="37000" />
-      <workItem from="1579334668730" duration="40475000" />
+      <workItem from="1579334668730" duration="41260000" />
     </task>
     <task id="LOCAL-00001" summary="Dodanie modelu User i enuma Role">
       <created>1578832449288</created>
@@ -639,11 +636,18 @@
       <option name="project" value="LOCAL" />
       <updated>1579441453932</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="pizza portal">
+      <created>1579443919414</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1579443919414</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52582000" />
+    <option name="totallyTimeSpent" value="53367000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -879,26 +883,26 @@
       </provider>
       <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/service/PizzaPortalService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="71" column="38" lean-forward="true" selection-start-line="71" selection-start-column="38" selection-end-line="71" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/controller/PizzaPortalController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="560">
-          <caret line="121" lean-forward="true" selection-start-line="121" selection-end-line="121" />
+          <caret line="124" lean-forward="true" selection-start-line="124" selection-end-line="124" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#943#944#0" expanded="true" />
             <element signature="e#966#967#0" expanded="true" />
             <element signature="e#4165#4531#0" expanded="true" />
             <element signature="e#4530#4531#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/service/PizzaPortalService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="86" column="41" selection-start-line="86" selection-start-column="41" selection-end-line="86" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

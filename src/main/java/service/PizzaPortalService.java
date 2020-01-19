@@ -74,4 +74,20 @@ public class PizzaPortalService {
                 .forEach(pizzaList -> pizzaList.setPrice(pizzaList.getPrice() * (1 - (discount/100))));
         return InMemoryDb.pizzaLists;
     }
+    // metoda przekazująca dane do koszyka
+    // loginUsera; listaPizz -> quantity > 0; cena Dozapłaty
+    public void addOrderToBasket(String userLogin){
+        List<PizzaList> pizzaLists = InMemoryDb.pizzaLists.stream()
+                .filter(pizza -> pizza.getQuantity() > 0)
+                .collect(Collectors.toList());
+        Double toPay = calculatePizzaOrder();
+        System.out.println(String.format("%s; %s; %.2f",
+                userLogin,
+                pizzaLists.stream()
+                        .map(PizzaList::getName)
+                        .collect(Collectors.joining(",")),
+                toPay
+                )
+        );
+    }
 }
