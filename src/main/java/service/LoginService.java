@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import model.User;
 import utility.InMemoryDb;
 
+import java.io.IOException;
 import java.util.Optional;
 
 // klasa implementująca logikę biznesową aplikacji
@@ -49,12 +50,22 @@ public class LoginService {
         return "błędny login";
     }
 
-    public void login(TextField tfLogin, PasswordField pfPassword, Label lblInfo){
+    public void login(TextField tfLogin, PasswordField pfPassword, Label lblInfo)  {
         Optional<User> userOpt = loginUser(tfLogin.getText(), pfPassword.getText());
         if(userOpt.isPresent() ){
             if(userOpt.get().isStatus()) {
-                lblInfo.setText("zalogowano");
-                clearLoginProbes(userOpt.get());
+                try {
+                    lblInfo.setText("zalogowano");
+                    WindowService windowService = new WindowService();
+                    // utworzenie okna Pizza Portal
+                    windowService.createWindow("pizzaPortalView", "Pizza Portal");
+                    // zamknięcie aktualnego okna
+                    windowService.closeWindow(lblInfo);
+                    clearLoginProbes(userOpt.get());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             } else {
                 lblInfo.setText("Twoje konto jest zabolokowane");
             }
