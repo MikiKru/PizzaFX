@@ -4,9 +4,8 @@ import model.Role;
 import model.User;
 import utility.InMemoryDb;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -16,7 +15,9 @@ import java.util.stream.Collectors;
 
 // logika biznesowa do obsługi plików
 public class FileService {
-    private static String pathToUsers = "C:\\Users\\PROXIMO\\Desktop\\TARR1\\PizzaPortal\\src\\main\\resources\\file\\users.csv";
+    // ścieżka bazpośrednia do pliku users.csv
+    private static String pathToUsers =
+            Paths.get("").toAbsolutePath().toString()+ "\\src\\main\\resources\\file\\users.csv";
     private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     // metoda pobierająca zawartość z pliku i wprawadzająca ją do listy users
     public static void selectUsers() throws FileNotFoundException {
@@ -42,7 +43,18 @@ public class FileService {
 
     }
     // metoda zapisująca zawartość z listy users do pliku
-    public void insertUsers(){
-
+    public static void updateUsers() throws IOException {
+        FileWriter fileWriter = new FileWriter(new File(pathToUsers));
+        for (User u : InMemoryDb.users) {
+            fileWriter.write(String.format("%s; %s; %s; %s; %s; %d\n",
+                    u.getLogin(),
+                    u.getPassword(),
+                    u.getRoles().stream().map(Enum::name).collect(Collectors.joining(",")),
+                    u.getRegistrationDateTime().format(dtf),
+                    u.isStatus(),
+                    u.getProbes())
+            );
+        }
+        fileWriter.close();
     }
 }

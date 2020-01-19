@@ -8,6 +8,7 @@ import model.Role;
 import model.User;
 import utility.InMemoryDb;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -39,7 +40,8 @@ public class RegistrationService {
     public boolean isPasswordConfirmed(String password, String confirmedPassword){
         return password.equals(confirmedPassword);
     }
-    public void registerUser(String login, String password){
+    // metody wywoływana do rejestracji użytkownika -> zapis w tablicy i pliku users
+    public void registerUser(String login, String password) throws IOException {
         // utwórz obiekt użytkownika
         User user = new User(
                 login,
@@ -50,6 +52,8 @@ public class RegistrationService {
                 3);
         // dodajemy obiekt do listy użytkowników
         InMemoryDb.users.add(user);
+        // aktualizacja pliku
+        FileService.updateUsers();
     }
     public void registration(TextField tfLogin, PasswordField pfPassword,
                              PasswordField pfPasswordConfirmation, Label lblInfo, TextField lblResult,
