@@ -62,16 +62,23 @@ public class LoginService {
                     // zamknięcie aktualnego okna
                     windowService.closeWindow(lblInfo);
                     clearLoginProbes(userOpt.get());
+                    FileService.updateUsers();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             } else {
                 lblInfo.setText("Twoje konto jest zabolokowane");
             }
         } else{
+            // dekrementacja liczby prób logowani
             decrementProbes(tfLogin.getText());
             lblInfo.setText(getLoginProbes(tfLogin.getText()));
+            try {
+                FileService.updateUsers();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }
