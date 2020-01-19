@@ -41,7 +41,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tblPizza" layoutX="14.0" layoutY="38.0" prefHeight="242.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="38.0">
+                        <TableView fx:id="tblPizza" layoutX="14.0" layoutY="38.0" onMouseClicked="#selectPizzaAction" prefHeight="242.0" prefWidth="780.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="38.0">
                           <columns>
                             <TableColumn fx:id="tcName" prefWidth="200.0" text="NAZWA" />
                             <TableColumn fx:id="tcIngredients" prefWidth="300.0" text="SKŁADNIKI" />

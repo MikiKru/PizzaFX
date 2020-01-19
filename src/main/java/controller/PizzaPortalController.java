@@ -10,6 +10,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import model.Pizza;
 import model.PizzaList;
 import service.PizzaPortalService;
@@ -17,10 +18,12 @@ import service.WindowService;
 import utility.InMemoryDb;
 
 import java.io.IOException;
+import java.util.List;
 
 public class PizzaPortalController {
     // obiekty globalne
     private WindowService windowService;
+    private PizzaPortalService pizzaPortalService;
     // przechowuje listę pizz
     private ObservableList pizzas = FXCollections.observableArrayList();
     @FXML
@@ -54,7 +57,12 @@ public class PizzaPortalController {
 
     @FXML
     void clearAction(ActionEvent event) {
-
+        List<PizzaList> pizzaLists = pizzaPortalService.clearPizzaOrder();
+        pizzas.clear();
+        pizzas.addAll(pizzaLists);
+        // wyczyszczenie tabelki
+        tblPizza.setItems(pizzas);    // aktualizacja tabelki
+        lblSum.setText("do zapłaty: 0 zł");
     }
 
     @FXML
@@ -68,8 +76,17 @@ public class PizzaPortalController {
         windowService.closeWindow(lblLogin);                                        // zamknięcie aktualnie otwartego okna
     }
 
+    @FXML
+    void selectPizzaAction(MouseEvent event) {
+        List<PizzaList> pizzaLists = pizzaPortalService.selectPizza(tblPizza);
+        pizzas.clear();
+        pizzas.addAll(pizzaLists);
+        // wyczyszczenie tabelki
+        tblPizza.setItems(pizzas);    // aktualizacja tabelki
+    }
 
     public void initialize(){
+        pizzaPortalService = new PizzaPortalService();  // nowa instancja klasy PPS
         // mapowanie enuma do PizzaList
         PizzaPortalService.mapPizzaToPizzaList();
         pizzas.addAll(InMemoryDb.pizzaLists);
