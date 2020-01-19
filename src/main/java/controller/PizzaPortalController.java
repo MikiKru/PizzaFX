@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import model.Pizza;
@@ -18,7 +15,9 @@ import service.WindowService;
 import utility.InMemoryDb;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class PizzaPortalController {
     // obiekty globalne
@@ -62,7 +61,7 @@ public class PizzaPortalController {
         pizzas.addAll(pizzaLists);
         // wyczyszczenie tabelki
         tblPizza.setItems(pizzas);    // aktualizacja tabelki
-        lblSum.setText("do zapłaty: 0 zł");
+        lblSum.setText("do zapłaty: 0.00 zł");
     }
 
     @FXML
@@ -83,20 +82,43 @@ public class PizzaPortalController {
         pizzas.addAll(pizzaLists);
         // wyczyszczenie tabelki
         tblPizza.setItems(pizzas);    // aktualizacja tabelki
+        // aktualizacja ceny do zapłaty
+        lblSum.setText(String.format("do zapłaty: %.2f zł", pizzaPortalService.calculatePizzaOrder()));
     }
 
+    private PizzaList pizzaOfDay;
     public void initialize(){
         pizzaPortalService = new PizzaPortalService();  // nowa instancja klasy PPS
         // mapowanie enuma do PizzaList
         PizzaPortalService.mapPizzaToPizzaList();
         pizzas.addAll(InMemoryDb.pizzaLists);
         windowService = new WindowService();
+        // generowanie pizzy dnia aktualizacja ceny i wypisanie na lbl
+        pizzaOfDay = pizzaPortalService.generatePizzaOfDay();
+        List<PizzaList> pizzaLists = pizzaPortalService.setDiscount(pizzaOfDay, 30);
+        pizzas.clear();
+        pizzas.addAll(pizzaLists);
+        lblPizzaOfDay.setText("PIZZA DNIA TO " + pizzaOfDay.getName().toUpperCase() + "!");
         // konfiguracja wartości wprowadzanych do kolumn tblPizza
         tcName.setCellValueFactory(new PropertyValueFactory<PizzaList, String>("name"));
         tcIngredients.setCellValueFactory(new PropertyValueFactory<PizzaList,String>("ingredients"));
         tcDescription.setCellValueFactory(new PropertyValueFactory<PizzaList, String>("description"));
         tcPrice.setCellValueFactory(new PropertyValueFactory<PizzaList, Double>("price"));
         tcQuantity.setCellValueFactory(new PropertyValueFactory<PizzaList, Integer>("quantity"));
+        // formatowanie do typu NumberFormat
+        Locale locale = new Locale("pl", "PL");
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        tcPrice.setCellFactory(tc -> new TableCell<PizzaList, Double>() {
+            @Override
+            protected void updateItem(Double price, boolean empty) {
+                super.updateItem(price, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(currencyFormat.format(price));
+                }
+            }
+        });
         // wprowadzenie wartości do tbl
         tblPizza.setItems(pizzas);
     }

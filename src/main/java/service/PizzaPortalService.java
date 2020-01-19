@@ -11,6 +11,7 @@ import utility.InMemoryDb;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class PizzaPortalService {
@@ -60,6 +61,17 @@ public class PizzaPortalService {
     // czyszczenie zamówienia
     public List<PizzaList> clearPizzaOrder(){
         InMemoryDb.pizzaLists.stream().forEach(pizza -> pizza.setQuantity(0));
+        return InMemoryDb.pizzaLists;
+    }
+    // generator pizzy dnia
+    public PizzaList generatePizzaOfDay(){
+        return InMemoryDb.pizzaLists.get(new Random().nextInt(InMemoryDb.pizzaLists.size()));
+    }
+    // przypisanie rabatu 30% na pizze dnia
+    public List<PizzaList> setDiscount(PizzaList pizza, double discount){
+        InMemoryDb.pizzaLists.stream()
+                .filter(pizzaList -> pizzaList.equals(pizza))
+                .forEach(pizzaList -> pizzaList.setPrice(pizzaList.getPrice() * (1 - (discount/100))));
         return InMemoryDb.pizzaLists;
     }
 }

@@ -55,7 +55,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
-                        <Label fx:id="lblSum" layoutX="14.0" layoutY="291.0" prefHeight="18.0" prefWidth="303.0" text="do zapłaty:">
+                        <Label fx:id="lblSum" layoutX="14.0" layoutY="291.0" prefHeight="18.0" prefWidth="303.0" text="do zapłaty: 0 zł">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
