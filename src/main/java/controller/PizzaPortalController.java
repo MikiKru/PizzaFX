@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Pizza;
 import model.PizzaList;
+import service.PizzaPortalService;
 import service.WindowService;
 import utility.InMemoryDb;
 
@@ -21,7 +22,7 @@ public class PizzaPortalController {
     // obiekty globalne
     private WindowService windowService;
     // przechowuje listę pizz
-    private ObservableList pizzas = FXCollections.observableArrayList(InMemoryDb.pizzaLists);
+    private ObservableList pizzas = FXCollections.observableArrayList();
     @FXML
     private Label lblLogin;
     @FXML
@@ -69,6 +70,9 @@ public class PizzaPortalController {
 
 
     public void initialize(){
+        // mapowanie enuma do PizzaList
+        PizzaPortalService.mapPizzaToPizzaList();
+        pizzas.addAll(InMemoryDb.pizzaLists);
         windowService = new WindowService();
         // konfiguracja wartości wprowadzanych do kolumn tblPizza
         tcName.setCellValueFactory(new PropertyValueFactory<PizzaList, String>("name"));
