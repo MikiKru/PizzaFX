@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -49,13 +50,7 @@ public class PizzaPortalController {
     @FXML
     private Label lblPizzaOfDay;
 
-    @FXML
-    void addToBasketAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void clearAction(ActionEvent event) {
+    private void clearOrder(){
         List<PizzaList> pizzaLists = pizzaPortalService.clearPizzaOrder();
         pizzas.clear();
         pizzas.addAll(pizzaLists);
@@ -65,15 +60,27 @@ public class PizzaPortalController {
     }
 
     @FXML
-    void exitAction(ActionEvent event) {
-        Platform.exit();
+    void addToBasketAction(ActionEvent event) {
+        pizzaPortalService.addOrderToBasket("XXX");
+        clearOrder();
     }
-
+    @FXML
+    void clearAction(ActionEvent event) {
+        clearOrder();
+    }
     @FXML
     void logoutAction(ActionEvent event) throws IOException {
         windowService.createWindow("loginView", "panel logowania");    // otwarcie okna logowania
         windowService.closeWindow(lblLogin);                                        // zamknięcie aktualnie otwartego okna
+        clearOrder();
     }
+
+    @FXML
+    void exitAction(ActionEvent event) {
+        Platform.exit();
+    }
+
+
 
     @FXML
     void selectPizzaAction(MouseEvent event) {

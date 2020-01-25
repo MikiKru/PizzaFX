@@ -1,5 +1,7 @@
 package service;
 
+import model.Basket;
+import model.PizzaList;
 import model.Role;
 import model.User;
 import utility.InMemoryDb;
@@ -16,8 +18,13 @@ import java.util.stream.Collectors;
 // logika biznesowa do obsługi plików
 public class FileService {
     // ścieżka bazpośrednia do pliku users.csv
+    // Paths.get("").toAbsolutePath().toString() - generowanie ścieżki bezpośredniej do katalogu
+    // głównego projektu -> PizzaPortal/
     private static String pathToUsers =
             Paths.get("").toAbsolutePath().toString()+ "\\src\\main\\resources\\file\\users.csv";
+    private static String pathToBaskets =
+            Paths.get("").toAbsolutePath().toString()+ "\\src\\main\\resources\\file\\baskets.csv";
+
     private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     // metoda pobierająca zawartość z pliku i wprawadzająca ją do listy users
     public static void selectUsers() throws FileNotFoundException {
@@ -57,4 +64,20 @@ public class FileService {
         }
         fileWriter.close();
     }
+    // metoda aktualizująca zawartość koszyka w oparciu o plik baskets.csv
+    public static void updateBasket() throws IOException {
+        FileWriter fileWriter = new FileWriter(new File(pathToBaskets));    // obiekt do zapisu do pliku o adresie
+                                                                            // URL jak w pathToBaskets
+        for (Basket basket : InMemoryDb.baskets){
+            fileWriter.write(
+                    String.format("%s; %s; %.2f; %s",
+                            basket.getUserLogin(),
+                            basket.getOrder(), // ??? formatowanie ???
+                            basket.getBasketAmount(),
+                            basket.getStatus()
+                            ));      // przepisanie zamówień z listy baskets do pliku baskets.csv
+        }
+        fileWriter.close();
+    }
+
 }
