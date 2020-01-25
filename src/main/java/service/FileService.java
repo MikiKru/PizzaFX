@@ -93,8 +93,6 @@ public class FileService {
                 String[] key_value = element.split("=");           // pojedyncze zamówienie to key=value
                 order.put(key_value[0], Integer.valueOf(key_value[1])); // dodanie zamówienia do mapy
             }
-            // w pliku "do realizacji"
-            // Enum -> NEW("nowe zamówienie")
             InMemoryDb.baskets.add(
                     new Basket(
                             line[0],

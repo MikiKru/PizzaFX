@@ -7,10 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import model.Pizza;
 import model.PizzaList;
+import service.LoginService;
 import service.PizzaPortalService;
 import service.WindowService;
 import utility.InMemoryDb;
@@ -61,8 +63,21 @@ public class PizzaPortalController {
 
     @FXML
     void addToBasketAction(ActionEvent event) throws IOException {
-        pizzaPortalService.addOrderToBasket("XXX");
-        clearOrder();
+        if(pizzaPortalService.calculatePizzaOrder() > 0) {
+            pizzaPortalService.addOrderToBasket(LoginService.loggedUser.getLogin()); // login zalogowanego użytkownika
+            clearOrder();
+            WindowService.getAlertWindow(
+                    AlertType.INFORMATION,
+                    "Dodawanie do koszyka",
+                    "Złożono zamówienie",
+                    "Dziękujemy za złożenie zamówienia. Możesz w zakładce koszyk śledzić jego status");
+        } else {
+            WindowService.getAlertWindow(
+                    AlertType.WARNING,
+                    "Dodawanie do koszyka",
+                    "Nie wybrano żadnego produktu",
+                    "Musisz wybrać jakiś produkt aby zrealizować zamówienie");
+        }
     }
     @FXML
     void clearAction(ActionEvent event) {
@@ -95,6 +110,9 @@ public class PizzaPortalController {
 
     private PizzaList pizzaOfDay;
     public void initialize(){
+        // wypisanie loginu zalogowanego użytkownika na lbl
+        lblLogin.setText("zalogowano: " + LoginService.loggedUser.getLogin());
+        // ---------------------------------------------------------
         pizzaPortalService = new PizzaPortalService();  // nowa instancja klasy PPS
         // mapowanie enuma do PizzaList
         PizzaPortalService.mapPizzaToPizzaList();
