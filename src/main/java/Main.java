@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import service.FileService;
 import utility.InMemoryDb;
 
+import java.io.File;
 import java.nio.file.Paths;
 
 public class Main extends Application {
@@ -19,8 +20,7 @@ public class Main extends Application {
         primaryStage.show();
         // aktualizacja listy users
         FileService.selectUsers();                              // pobranie zawartości pliku i dodanie do listy
-//        InMemoryDb.users.forEach(System.out::println); // wypisanie listy users
-//        FileService.updateUsers();
+        FileService.selectBaskets();
     }
     public static void main(String[] args) {
 

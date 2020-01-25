@@ -3,15 +3,11 @@ package service;
 import javafx.collections.FXCollections;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
-import model.Ingredient;
-import model.Pizza;
-import model.PizzaList;
+import model.*;
 import utility.InMemoryDb;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PizzaPortalService {
@@ -76,19 +72,34 @@ public class PizzaPortalService {
     }
     // metoda przekazująca dane do koszyka
     // loginUsera; listaPizz -> quantity > 0; cena Dozapłaty
-    public void addOrderToBasket(String userLogin){
+    public void addOrderToBasket(String userLogin) throws IOException {
         List<PizzaList> pizzaLists = InMemoryDb.pizzaLists.stream()
                 .filter(pizza -> pizza.getQuantity() > 0)
                 .collect(Collectors.toList());
         Double toPay = calculatePizzaOrder();
-        System.out.println(String.format("%s; %s; %.2f; %s",
+//        System.out.println(String.format("%s; %s; %.2f; %s",
+//                userLogin,
+//                pizzaLists.stream()
+//                        .map(pizzaList -> pizzaList.getName() + " : " + pizzaList.getQuantity())
+//                        .collect(Collectors.joining(", ")),
+//                toPay,
+//                "nowe zamówienie"
+//                )
+//        );
+        // zapis zamówienia w podręcznym koszyku
+        Map<String, Integer> order = new HashMap<>();
+        for(PizzaList pizzaList : pizzaLists) {
+            if(pizzaList.getQuantity() > 0) {                       // wprowadzam tylko te pizzy, które są zamówione
+                                                                    // w ilości > 0
+                order.put(pizzaList.getName(),pizzaList.getQuantity());
+            }
+        }
+        InMemoryDb.baskets.add(new Basket(
                 userLogin,
-                pizzaLists.stream()
-                        .map(pizzaList -> pizzaList.getName() + " : " + pizzaList.getQuantity())
-                        .collect(Collectors.joining(", ")),
+                order,
                 toPay,
-                "nowe zamówienie"
-                )
-        );
+                Status.NEW));
+        // aktualizacja pliku w oparciu o InMemoryDB.baskets
+        FileService.updateBasket();
     }
 }

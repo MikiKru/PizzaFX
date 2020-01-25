@@ -60,7 +60,7 @@ public class PizzaPortalController {
     }
 
     @FXML
-    void addToBasketAction(ActionEvent event) {
+    void addToBasketAction(ActionEvent event) throws IOException {
         pizzaPortalService.addOrderToBasket("XXX");
         clearOrder();
     }
