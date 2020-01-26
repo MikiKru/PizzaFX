@@ -193,13 +193,13 @@ public class PizzaPortalController {
     @FXML
     private Tab tabBasketStatus;
     @FXML
-    private TableView<?> tblOrders;
+    private TableView<Basket> tblOrders;
     @FXML
-    private TableColumn<?, ?> tcLogin;
+    private TableColumn<Basket, String> tcLogin;
     @FXML
-    private TableColumn<?, ?> tcOrder;
+    private TableColumn<Basket, Map> tcOrder;
     @FXML
-    private TableColumn<?, ?> tcOrderStatus;
+    private TableColumn<Basket, Status> tcOrderStatus;
     @FXML
     private ComboBox<?> cbStatus;
     @FXML
@@ -208,6 +208,35 @@ public class PizzaPortalController {
     private CheckBox cInProgress;
     @FXML
     private CheckBox cNew;
+    // metoda dodająca dane do tabelki
+    private void addDataToOrderTable(){
+        // konfiguracja kolumn
+        tcLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
+        tcOrder.setCellValueFactory(new PropertyValueFactory<>("order"));
+        tcOrderStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        // edycja wyświetlania wartości
+        tcOrder.setCellFactory(order -> new TableCell<Basket, Map>() {
+            @Override
+            protected void updateItem(Map basket, boolean empty) {
+                super.updateItem(basket, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(basket.toString()
+                            .replace("{", "")
+                            .replace("}", "")
+                            .replace("=", " x ")
+                    ); }}});
+        tcOrderStatus.setCellFactory(order -> new TableCell<Basket, Status>() {
+            @Override
+            protected void updateItem(Status status, boolean empty) {
+                super.updateItem(status, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(status.getStatusName());
+                } }});
+    }
 
     @FXML
     void confirmStatusAction(ActionEvent event) { }
