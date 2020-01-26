@@ -322,8 +322,28 @@ public class PizzaPortalController {
 
     @FXML
     private Tab tabBasket;
+    // --------------------------------------------------------------------------
+    @FXML
+    private ProgressBar pBar;
 
     public void initialize() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 100; i++) {
+                    try {
+                        Thread.currentThread().sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    double range = (double)i / 100;
+                    pBar.setProgress(range);
+                }
+                Platform.exit();
+            }
+        });
+        thread.start();
+    // --------------------------------------------------------------------------
         // zarządzanie widocznością tabów w zależności od roli
         Set<Role> roles = LoginService.loggedUser.getRoles();
         System.out.println(roles);

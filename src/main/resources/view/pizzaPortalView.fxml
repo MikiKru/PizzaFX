@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -75,6 +76,7 @@
                               <Font name="System Bold Italic" size="14.0" />
                            </font>
                         </Label>
+                        <ProgressBar fx:id="pBar" layoutX="200.0" layoutY="292.0" prefWidth="200.0" progress="0.0" />
                      </children>
                   </AnchorPane>
             </content>
