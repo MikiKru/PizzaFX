@@ -21,10 +21,7 @@ import utility.InMemoryDb;
 
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PizzaPortalController {
@@ -201,13 +198,16 @@ public class PizzaPortalController {
     @FXML
     private TableColumn<Basket, Status> tcOrderStatus;
     @FXML
-    private ComboBox<?> cbStatus;
+    private ComboBox<String> cbStatus;
     @FXML
-    private Spinner<?> sTime;
+    private Spinner<Integer> sTime;
     @FXML
     private CheckBox cInProgress;
     @FXML
     private CheckBox cNew;
+    @FXML
+    private Button btnConfirmStatus;
+
     // metoda dodająca dane do tabelki
     private void addDataToOrderTable(){
         // konfiguracja kolumn
@@ -271,7 +271,18 @@ public class PizzaPortalController {
         selectCheckBox();
     }
     @FXML
-    void selectOrderAction(MouseEvent event) { }
+    void selectOrderAction(MouseEvent event) {
+        Basket basket = tblOrders.getSelectionModel().getSelectedItem();
+        if(basket != null) {
+            cbStatus.setDisable(false);
+            sTime.setDisable(false);
+            btnConfirmStatus.setDisable(false);
+        } else {
+            cbStatus.setDisable(true);
+            sTime.setDisable(true);
+            btnConfirmStatus.setDisable(true);
+        }
+    }
     // -------------------------------------------------------------------------
     private PizzaList pizzaOfDay;
 
@@ -316,6 +327,14 @@ public class PizzaPortalController {
         addDataToBasketsTable();
         // ----------------------------------------------------------------
         addDataToOrderTable();
+        // wprowadzenie danych do combobox
+        cbStatus.setItems(FXCollections.observableArrayList(
+                Arrays.stream(Status.values()).map(Status::getStatusName).collect(Collectors.toList())
+        ));
+        // wprowadzenie danych do spinner
+        SpinnerValueFactory<Integer> valueFactory =
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(15, 150, 30, 5);
+        sTime.setValueFactory(valueFactory);
     }
 
 }
