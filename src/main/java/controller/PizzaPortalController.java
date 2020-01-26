@@ -14,6 +14,7 @@ import model.Basket;
 import model.Pizza;
 import model.PizzaList;
 import model.Status;
+import service.FileService;
 import service.LoginService;
 import service.PizzaPortalService;
 import service.WindowService;
@@ -238,8 +239,49 @@ public class PizzaPortalController {
                 } }});
         tblOrders.setItems(FXCollections.observableArrayList(InMemoryDb.baskets));
     }
+
+    private Basket basket;
     @FXML
-    void confirmStatusAction(ActionEvent event) { }
+    void confirmStatusAction(ActionEvent event) throws IOException {
+        // pobranie statusu z listy rozwijanej
+        String statusName = cbStatus.getValue();
+        // zmień status wybranego obiektu na wybrany z listy rozwijanej
+        InMemoryDb.baskets.stream().forEach(basket1 -> {
+            if(basket1.equals(basket)){
+                basket1.setStatus(Arrays.stream(Status.values())
+                        .filter(status -> status.getStatusName().equals(statusName))
+                        .findAny().get());
+            }});
+        // okno alertowe potwerdzające zmianę statusu
+        WindowService.getAlertWindow(
+                AlertType.INFORMATION,
+                "Zmiana statusu zamówienia",
+                "Zmieniono status zamówienia",
+                "Aktualny status zamówienia: " + statusName);
+        // aktualizacja tabelki
+        addDataToOrderTable();
+        addDataToBasketsTable();
+        // aktualizacja pliku
+        FileService.updateBasket();
+        // auto-mailing
+    }
+    @FXML
+    void selectOrderAction(MouseEvent event) {
+        basket = tblOrders.getSelectionModel().getSelectedItem();
+        if(basket != null) {
+            cbStatus.setDisable(false);
+            sTime.setDisable(false);
+            btnConfirmStatus.setDisable(false);
+            // pobranie aktualnego statusu i ustawienie go na combobox
+            Status status = basket.getStatus();
+            cbStatus.setValue(status.getStatusName());
+        } else {
+            cbStatus.setDisable(true);
+            sTime.setDisable(true);
+            btnConfirmStatus.setDisable(true);
+        }
+    }
+
 
     private void selectCheckBox(){
         if(cInProgress.isSelected() && cNew.isSelected()){
@@ -270,19 +312,7 @@ public class PizzaPortalController {
     void selectNewAction(ActionEvent event) {
         selectCheckBox();
     }
-    @FXML
-    void selectOrderAction(MouseEvent event) {
-        Basket basket = tblOrders.getSelectionModel().getSelectedItem();
-        if(basket != null) {
-            cbStatus.setDisable(false);
-            sTime.setDisable(false);
-            btnConfirmStatus.setDisable(false);
-        } else {
-            cbStatus.setDisable(true);
-            sTime.setDisable(true);
-            btnConfirmStatus.setDisable(true);
-        }
-    }
+
     // -------------------------------------------------------------------------
     private PizzaList pizzaOfDay;
 
