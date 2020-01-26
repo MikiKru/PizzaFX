@@ -121,6 +121,7 @@ public class PizzaPortalController {
     private ListView<String> lvBasket;
     @FXML
     private Label lblBasketAmount;
+
     @FXML
     void showDetailsAction(MouseEvent event) {
         // zaznaczamy rekord w tabelce i pobieramy z niego obiekt klasy Basket
@@ -128,16 +129,17 @@ public class PizzaPortalController {
         // wypisanie szczegółowych informacji dot zaznaczonego koszyka
         ObservableList<String> detailBasket = FXCollections.observableArrayList();
         detailBasket.add("STATUS: " + basket.getStatus().getStatusName());
-        for(String name : basket.getOrder().keySet()){
+        for (String name : basket.getOrder().keySet()) {
             detailBasket.add("Pizza: " + name + " : " + basket.getOrder().get(name) + "szt.");
         }
         lvBasket.setItems(detailBasket);
         // aktualizacja kwoty do zapłaty
         lblBasketAmount.setText(String.format("SUMA: %.2f PLN", basket.getBasketAmount()));
     }
+
     // metoda wprowadzająca dane z pliku baskets.csv do koszyka,
     // ale dotyczące tylko zalogowanego użytkownika
-    private List<Basket> getUserBasket(String login){
+    private List<Basket> getUserBasket(String login) {
         // 1. z listy koszyków odfiltruj tylko dane dot. usera zidentyfikowanego po loginie
         List<Basket> userBaskets = InMemoryDb.baskets.stream()
                 .filter(basket -> basket.getUserLogin().equals(login))
@@ -145,8 +147,9 @@ public class PizzaPortalController {
                 .collect(Collectors.toList());
         return userBaskets;
     }
+
     // metoda do konfiguracji kolumn w tblBasket i wprowadzenia danych dot. koszyków użytkownika
-    private void addDataToBasketsTable(){
+    private void addDataToBasketsTable() {
         // konfiguracja wartości przekazywanych do kolumn z modelu
         tcBasket.setCellValueFactory(new PropertyValueFactory<>("order"));
         tcStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -206,7 +209,7 @@ public class PizzaPortalController {
     private Button btnConfirmStatus;
 
     // metoda dodająca dane do tabelki
-    private void addDataToOrderTable(){
+    private void addDataToOrderTable() {
         // konfiguracja kolumn
         tcLogin.setCellValueFactory(new PropertyValueFactory<>("userLogin"));
         tcOrder.setCellValueFactory(new PropertyValueFactory<>("order"));
@@ -223,7 +226,10 @@ public class PizzaPortalController {
                             .replace("{", "")
                             .replace("}", "")
                             .replace("=", " x ")
-                    ); }}});
+                    );
+                }
+            }
+        });
         tcOrderStatus.setCellFactory(order -> new TableCell<Basket, Status>() {
             @Override
             protected void updateItem(Status status, boolean empty) {
@@ -232,7 +238,9 @@ public class PizzaPortalController {
                     setText(null);
                 } else {
                     setText(status.getStatusName());
-                } }});
+                }
+            }
+        });
         // dodanie koszyka bez statusu dostarczone
         tblOrders.setItems(FXCollections.observableArrayList(InMemoryDb.baskets.stream()
                 .filter(b -> !b.getStatus().equals(Status.DONE))
@@ -241,17 +249,19 @@ public class PizzaPortalController {
     }
 
     private Basket basket;
+
     @FXML
     void confirmStatusAction(ActionEvent event) throws IOException, MessagingException {
         // pobranie statusu z listy rozwijanej
         String statusName = cbStatus.getValue();
         // zmień status wybranego obiektu na wybrany z listy rozwijanej
         InMemoryDb.baskets.stream().forEach(basket1 -> {
-            if(basket1.equals(basket)){
+            if (basket1.equals(basket)) {
                 basket1.setStatus(Arrays.stream(Status.values())
                         .filter(status -> status.getStatusName().equals(statusName))
                         .findAny().get());
-            }});
+            }
+        });
         // okno alertowe potwerdzające zmianę statusu
         WindowService.getAlertWindow(
                 AlertType.INFORMATION,
@@ -266,10 +276,11 @@ public class PizzaPortalController {
         // auto-mailing
 //        MailingService.sendEmail("michal_kruczkowski@o2.pl", "Test", "Test");
     }
+
     @FXML
     void selectOrderAction(MouseEvent event) {
         basket = tblOrders.getSelectionModel().getSelectedItem();
-        if(basket != null) {
+        if (basket != null) {
             cbStatus.setDisable(false);
             sTime.setDisable(false);
             btnConfirmStatus.setDisable(false);
@@ -284,22 +295,22 @@ public class PizzaPortalController {
     }
 
 
-    private void selectCheckBox(){
+    private void selectCheckBox() {
         List<Basket> filteredBaskets = InMemoryDb.baskets.stream()
                 .filter(b -> !b.getStatus().equals(Status.DONE))
                 .collect(Collectors.toList());
-        if(cInProgress.isSelected() && cNew.isSelected()){
+        if (cInProgress.isSelected() && cNew.isSelected()) {
             List<Basket> newOrders = filteredBaskets.stream()
                     .filter(basket -> basket.getStatus().equals(Status.NEW)
                             || basket.getStatus().equals(Status.IN_PROGRESS))
                     .collect(Collectors.toList());
             tblOrders.setItems(FXCollections.observableArrayList(newOrders));
-        }else if(cInProgress.isSelected()) {
+        } else if (cInProgress.isSelected()) {
             List<Basket> newOrders = filteredBaskets.stream()
                     .filter(basket -> basket.getStatus().equals(Status.IN_PROGRESS))
                     .collect(Collectors.toList());
             tblOrders.setItems(FXCollections.observableArrayList(newOrders));
-        }else if(cNew.isSelected()) {
+        } else if (cNew.isSelected()) {
             List<Basket> newOrders = filteredBaskets.stream()
                     .filter(basket -> basket.getStatus().equals(Status.NEW))
                     .collect(Collectors.toList());
@@ -308,10 +319,12 @@ public class PizzaPortalController {
             tblOrders.setItems(FXCollections.observableArrayList(filteredBaskets));
         }
     }
+
     @FXML
     void selectInProgressAction(ActionEvent event) {
         selectCheckBox();
     }
+
     @FXML
     void selectNewAction(ActionEvent event) {
         selectCheckBox();
@@ -326,32 +339,34 @@ public class PizzaPortalController {
     @FXML
     private ProgressBar pBar;
 
-    public void initialize() {
+    public void initialize() throws IOException, InterruptedException {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i <= 100; i++) {
                     try {
-                        Thread.currentThread().sleep(1000);
+                        Thread.currentThread().sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    double range = (double)i / 100;
+                    double range = (double) i / 100;
                     pBar.setProgress(range);
                 }
                 Platform.exit();
             }
         });
         thread.start();
-    // --------------------------------------------------------------------------
+
+
+        // --------------------------------------------------------------------------
         // zarządzanie widocznością tabów w zależności od roli
         Set<Role> roles = LoginService.loggedUser.getRoles();
         System.out.println(roles);
-        if(!roles.contains(Role.ROLE_USER)){
+        if (!roles.contains(Role.ROLE_USER)) {
             tabMenu.setDisable(true);
             tabBasket.setDisable(true);
         }
-        if(!roles.contains(Role.ROLE_ADMIN)){
+        if (!roles.contains(Role.ROLE_ADMIN)) {
             tabBasketStatus.setDisable(true);
         }
 
