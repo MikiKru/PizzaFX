@@ -10,16 +10,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import model.Basket;
-import model.Pizza;
-import model.PizzaList;
-import model.Status;
-import service.FileService;
-import service.LoginService;
-import service.PizzaPortalService;
-import service.WindowService;
+import model.*;
+import service.*;
 import utility.InMemoryDb;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.*;
@@ -77,6 +72,7 @@ public class PizzaPortalController {
                     "Dziękujemy za złożenie zamówienia. Możesz w zakładce koszyk śledzić jego status");
             // aktualizacja tablicy koszyków
             addDataToBasketsTable();
+            addDataToOrderTable();
         } else {
             WindowService.getAlertWindow(
                     AlertType.WARNING,
@@ -237,12 +233,16 @@ public class PizzaPortalController {
                 } else {
                     setText(status.getStatusName());
                 } }});
-        tblOrders.setItems(FXCollections.observableArrayList(InMemoryDb.baskets));
+        // dodanie koszyka bez statusu dostarczone
+        tblOrders.setItems(FXCollections.observableArrayList(InMemoryDb.baskets.stream()
+                .filter(b -> !b.getStatus().equals(Status.DONE))
+                .collect(Collectors.toList())
+        ));
     }
 
     private Basket basket;
     @FXML
-    void confirmStatusAction(ActionEvent event) throws IOException {
+    void confirmStatusAction(ActionEvent event) throws IOException, MessagingException {
         // pobranie statusu z listy rozwijanej
         String statusName = cbStatus.getValue();
         // zmień status wybranego obiektu na wybrany z listy rozwijanej
@@ -264,6 +264,7 @@ public class PizzaPortalController {
         // aktualizacja pliku
         FileService.updateBasket();
         // auto-mailing
+//        MailingService.sendEmail("michal_kruczkowski@o2.pl", "Test", "Test");
     }
     @FXML
     void selectOrderAction(MouseEvent event) {
@@ -284,24 +285,27 @@ public class PizzaPortalController {
 
 
     private void selectCheckBox(){
+        List<Basket> filteredBaskets = InMemoryDb.baskets.stream()
+                .filter(b -> !b.getStatus().equals(Status.DONE))
+                .collect(Collectors.toList());
         if(cInProgress.isSelected() && cNew.isSelected()){
-            List<Basket> newOrders = InMemoryDb.baskets.stream()
+            List<Basket> newOrders = filteredBaskets.stream()
                     .filter(basket -> basket.getStatus().equals(Status.NEW)
                             || basket.getStatus().equals(Status.IN_PROGRESS))
                     .collect(Collectors.toList());
             tblOrders.setItems(FXCollections.observableArrayList(newOrders));
         }else if(cInProgress.isSelected()) {
-            List<Basket> newOrders = InMemoryDb.baskets.stream()
+            List<Basket> newOrders = filteredBaskets.stream()
                     .filter(basket -> basket.getStatus().equals(Status.IN_PROGRESS))
                     .collect(Collectors.toList());
             tblOrders.setItems(FXCollections.observableArrayList(newOrders));
         }else if(cNew.isSelected()) {
-            List<Basket> newOrders = InMemoryDb.baskets.stream()
+            List<Basket> newOrders = filteredBaskets.stream()
                     .filter(basket -> basket.getStatus().equals(Status.NEW))
                     .collect(Collectors.toList());
             tblOrders.setItems(FXCollections.observableArrayList(newOrders));
         } else {
-            tblOrders.setItems(FXCollections.observableArrayList(InMemoryDb.baskets));
+            tblOrders.setItems(FXCollections.observableArrayList(filteredBaskets));
         }
     }
     @FXML
@@ -316,7 +320,21 @@ public class PizzaPortalController {
     // -------------------------------------------------------------------------
     private PizzaList pizzaOfDay;
 
+    @FXML
+    private Tab tabBasket;
+
     public void initialize() {
+        // zarządzanie widocznością tabów w zależności od roli
+        Set<Role> roles = LoginService.loggedUser.getRoles();
+        System.out.println(roles);
+        if(!roles.contains(Role.ROLE_USER)){
+            tabMenu.setDisable(true);
+            tabBasket.setDisable(true);
+        }
+        if(!roles.contains(Role.ROLE_ADMIN)){
+            tabBasketStatus.setDisable(true);
+        }
+
         // wypisanie loginu zalogowanego użytkownika na lbl
         lblLogin.setText("zalogowano: " + LoginService.loggedUser.getLogin());
         // ---------------------------------------------------------
