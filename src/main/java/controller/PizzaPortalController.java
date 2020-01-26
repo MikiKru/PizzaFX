@@ -189,7 +189,35 @@ public class PizzaPortalController {
         ));
     }
 
-    // -----------------------------------------------------------------------------------
+    // ------------ TAB 3 --------------------------------------------------------------------
+    @FXML
+    private Tab tabBasketStatus;
+    @FXML
+    private TableView<?> tblOrders;
+    @FXML
+    private TableColumn<?, ?> tcLogin;
+    @FXML
+    private TableColumn<?, ?> tcOrder;
+    @FXML
+    private TableColumn<?, ?> tcOrderStatus;
+    @FXML
+    private ComboBox<?> cbStatus;
+    @FXML
+    private Spinner<?> sTime;
+    @FXML
+    private CheckBox cInProgress;
+    @FXML
+    private CheckBox cNew;
+
+    @FXML
+    void confirmStatusAction(ActionEvent event) { }
+    @FXML
+    void selectInProgressAction(ActionEvent event) { }
+    @FXML
+    void selectNewAction(ActionEvent event) { }
+    @FXML
+    void selectOrderAction(MouseEvent event) { }
+    // -------------------------------------------------------------------------
     private PizzaList pizzaOfDay;
 
     public void initialize() {

@@ -123,22 +123,23 @@
                               <Font name="System Bold Italic" size="14.0" />
                            </font>
                         </Label>
-                        <TableView layoutX="24.0" layoutY="46.0" prefHeight="263.0" prefWidth="500.0">
+                        <TableView fx:id="tblOrders" layoutX="24.0" layoutY="46.0" onMouseClicked="#selectOrderAction" prefHeight="263.0" prefWidth="500.0">
                           <columns>
-                            <TableColumn prefWidth="100.0" text="login" />
-                            <TableColumn minWidth="0.0" prefWidth="300.0" text="zamówienie" />
-                              <TableColumn minWidth="8.0" prefWidth="100.0" text="status" />
+                            <TableColumn fx:id="tcLogin" prefWidth="100.0" text="login" />
+                            <TableColumn fx:id="tcOrder" minWidth="0.0" prefWidth="300.0" text="zamówienie" />
+                              <TableColumn fx:id="tcStatus" minWidth="8.0" prefWidth="100.0" text="status" />
                           </columns>
                         </TableView>
-                        <ComboBox layoutX="636.0" layoutY="46.0" prefWidth="150.0" promptText="zmień status" AnchorPane.rightAnchor="20.0" />
-                        <Spinner layoutX="637.0" layoutY="90.0" AnchorPane.rightAnchor="20.0" />
+                        <ComboBox fx:id="cbStatus" layoutX="636.0" layoutY="46.0" prefWidth="150.0" promptText="zmień status" AnchorPane.rightAnchor="20.0" />
+                        <Spinner fx:id="sTime" layoutX="637.0" layoutY="90.0" AnchorPane.rightAnchor="20.0" />
                         <ImageView fitHeight="133.0" fitWidth="146.0" layoutX="638.0" layoutY="199.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
                            <image>
                               <Image url="@../img/admin.gif" />
                            </image>
                         </ImageView>
-                        <CheckBox layoutX="638.0" layoutY="155.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="tylko w realizacji" AnchorPane.rightAnchor="20.0" />
-                        <CheckBox alignment="TOP_LEFT" layoutX="638.0" layoutY="129.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="tylko nowe zamówienie" AnchorPane.rightAnchor="20.0" />
+                        <CheckBox fx:id="cInProgress" layoutX="415.0" layoutY="15.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#selectInProgressAction" text="tylko w realizacji" AnchorPane.rightAnchor="276.20000000000005" />
+                        <CheckBox fx:id="cNew" alignment="TOP_LEFT" layoutX="208.0" layoutY="15.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#selectNewAction" text="tylko nowe zamówienie" AnchorPane.rightAnchor="445.6" />
+                        <Button layoutX="641.0" layoutY="150.0" mnemonicParsing="false" onAction="#confirmStatusAction" prefHeight="26.0" prefWidth="131.0" style="-fx-background-color: lightgreen;" text="potwierdź" />
                      </children>
                   </AnchorPane>
               </content>
