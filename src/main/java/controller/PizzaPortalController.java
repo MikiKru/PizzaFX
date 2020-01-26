@@ -211,7 +211,7 @@ public class PizzaPortalController {
     // metoda dodająca dane do tabelki
     private void addDataToOrderTable(){
         // konfiguracja kolumn
-        tcLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
+        tcLogin.setCellValueFactory(new PropertyValueFactory<>("userLogin"));
         tcOrder.setCellValueFactory(new PropertyValueFactory<>("order"));
         tcOrderStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         // edycja wyświetlania wartości
@@ -236,14 +236,40 @@ public class PizzaPortalController {
                 } else {
                     setText(status.getStatusName());
                 } }});
+        tblOrders.setItems(FXCollections.observableArrayList(InMemoryDb.baskets));
     }
-
     @FXML
     void confirmStatusAction(ActionEvent event) { }
+
+    private void selectCheckBox(){
+        if(cInProgress.isSelected() && cNew.isSelected()){
+            List<Basket> newOrders = InMemoryDb.baskets.stream()
+                    .filter(basket -> basket.getStatus().equals(Status.NEW)
+                            || basket.getStatus().equals(Status.IN_PROGRESS))
+                    .collect(Collectors.toList());
+            tblOrders.setItems(FXCollections.observableArrayList(newOrders));
+        }else if(cInProgress.isSelected()) {
+            List<Basket> newOrders = InMemoryDb.baskets.stream()
+                    .filter(basket -> basket.getStatus().equals(Status.IN_PROGRESS))
+                    .collect(Collectors.toList());
+            tblOrders.setItems(FXCollections.observableArrayList(newOrders));
+        }else if(cNew.isSelected()) {
+            List<Basket> newOrders = InMemoryDb.baskets.stream()
+                    .filter(basket -> basket.getStatus().equals(Status.NEW))
+                    .collect(Collectors.toList());
+            tblOrders.setItems(FXCollections.observableArrayList(newOrders));
+        } else {
+            tblOrders.setItems(FXCollections.observableArrayList(InMemoryDb.baskets));
+        }
+    }
     @FXML
-    void selectInProgressAction(ActionEvent event) { }
+    void selectInProgressAction(ActionEvent event) {
+        selectCheckBox();
+    }
     @FXML
-    void selectNewAction(ActionEvent event) { }
+    void selectNewAction(ActionEvent event) {
+        selectCheckBox();
+    }
     @FXML
     void selectOrderAction(MouseEvent event) { }
     // -------------------------------------------------------------------------
@@ -289,6 +315,7 @@ public class PizzaPortalController {
         // TAB2 - BASKET --------------------------------------------------
         addDataToBasketsTable();
         // ----------------------------------------------------------------
+        addDataToOrderTable();
     }
 
 }
